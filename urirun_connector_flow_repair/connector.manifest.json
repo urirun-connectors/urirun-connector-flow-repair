@@ -40,6 +40,7 @@
     "flow"
   ],
   "routes": [
+    "flow://host/doctor/query/report",
     "flow://host/repair/command/run"
   ],
   "examples": [

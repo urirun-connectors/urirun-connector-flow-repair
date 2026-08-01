@@ -17,6 +17,7 @@ from urirun_connector_flow_repair import connector_manifest, repair_loop, run_re
 HERE = os.path.dirname(os.path.abspath(__file__))
 TOOLSTUB = [sys.executable, os.path.join(HERE, "toolstub.py")]
 ROUTE = "flow://host/repair/command/run"
+ROUTE_DOCTOR = "flow://host/doctor/query/report"
 
 
 def _registry() -> dict:
@@ -114,7 +115,7 @@ def test_run_repair_requires_goal_and_registry() -> None:
 
 def test_bindings_are_isolated_handler() -> None:
     b = urirun_bindings()["bindings"]
-    assert set(b) == {ROUTE}
+    assert set(b) == {ROUTE, ROUTE_DOCTOR}
     assert b[ROUTE]["adapter"] == "local-function-subprocess"
     assert b[ROUTE]["python"]["export"] == "run_repair"
     json.dumps(urirun_bindings())
@@ -128,7 +129,7 @@ def test_compiles_and_route_present() -> None:
 def test_manifest() -> None:
     m = connector_manifest()
     assert m["id"] == "flow-repair"
-    assert set(m["routes"]) == {ROUTE}
+    assert set(m["routes"]) == {ROUTE, ROUTE_DOCTOR}
     assert m["uriSchemes"] == ["flow"]
 
 

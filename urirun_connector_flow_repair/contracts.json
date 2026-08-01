@@ -4,16 +4,57 @@
       "version": "v1",
       "effect": "command",
       "reversible": false,
-      "inp": { "goal": "?str", "registry": "?str", "model": "?str" },
-      "out": {
-        "succeeded": "bool", "attempts": "int",
-        "flow": "?obj", "transcript": "?list", "lastError": "?str"
+      "inp": {
+        "goal": "?str",
+        "registry": "?str",
+        "model": "?str"
       },
-      "errors": ["precondition-unmet", "degraded-backend"],
+      "out": {
+        "succeeded": "bool",
+        "attempts": "int",
+        "flow": "?obj",
+        "transcript": "?list",
+        "lastError": "?str"
+      },
+      "errors": [
+        "precondition-unmet",
+        "degraded-backend"
+      ],
       "examples": [
         {
-          "payload": { "goal": "list my repos", "registry": "bindings.json" },
-          "result": { "ok": true, "succeeded": true, "attempts": 1, "flow": {} }
+          "payload": {
+            "goal": "list my repos",
+            "registry": "bindings.json"
+          },
+          "result": {
+            "ok": true,
+            "succeeded": true,
+            "attempts": 1,
+            "flow": {}
+          }
+        }
+      ]
+    },
+    "doctor/query/report": {
+      "version": "v1",
+      "effect": "query",
+      "reversible": false,
+      "inp": {},
+      "out": {
+        "connector": "str",
+        "version": "str",
+        "status": "str"
+      },
+      "errors": [],
+      "examples": [
+        {
+          "payload": {},
+          "result": {
+            "ok": true,
+            "connector": "flow-repair",
+            "version": "0.1.0",
+            "status": "ready"
+          }
         }
       ]
     }
