@@ -105,6 +105,22 @@ def test_llm_planner_calls_llm_connector(monkeypatch) -> None:
     assert captured["model"] == "openrouter/anthropic/claude-3.5-sonnet"
 
 
+def test_llm_planner_with_oqllm_docker() -> None:
+    import urllib.request
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11437/health", timeout=1.0) as resp:
+            if resp.status != 200:
+                pytest.skip("OQLLM Docker not healthy")
+    except Exception:
+        pytest.skip("OQLLM Docker not reachable on 11437")
+
+    plan = core._llm_planner("oqlos/system-one-router", "http://127.0.0.1:11437", "ollama")
+    out = plan("save a note", ["note://host/store/command/put"], None)
+    assert len(out) > 0
+    assert "note://host/store/command/put" in out or "task" in out or "steps" in out
+
+
+
 # --- handler surface --------------------------------------------------------
 
 def test_run_repair_requires_goal_and_registry() -> None:
